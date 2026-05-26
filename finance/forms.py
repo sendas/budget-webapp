@@ -1,25 +1,32 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 from .models import FixedExpense, MonthlyBudget, Transaction
+from .preferences import get_category_labels, get_form_text, get_kind_labels
 
 
 class SignupForm(UserCreationForm):
-    username = forms.CharField(label="Utilizador")
+    username = forms.CharField()
     email = forms.EmailField(label="Email", required=True)
     password1 = forms.CharField(
-        label="Palavra-passe",
         strip=False,
         widget=forms.PasswordInput,
-        help_text="Usa pelo menos 8 caracteres e evita palavras-passe comuns ou totalmente numericas.",
     )
     password2 = forms.CharField(
-        label="Confirmacao da palavra-passe",
         strip=False,
         widget=forms.PasswordInput,
-        help_text="Repete a palavra-passe para confirmacao.",
     )
+
+    def __init__(self, *args, language="pt", **kwargs):
+        super().__init__(*args, **kwargs)
+        text = get_form_text(language)
+        self.fields["username"].label = text["username"]
+        self.fields["password1"].label = text["password"]
+        self.fields["password1"].help_text = text["password_help"]
+        self.fields["password2"].label = text["password_confirm"]
+        self.fields["password2"].help_text = text["password_confirm_help"]
 
     class Meta:
         model = User
@@ -35,10 +42,16 @@ class SignupForm(UserCreationForm):
 
 
 class MonthlyBudgetForm(forms.ModelForm):
+    def __init__(self, *args, language="pt", **kwargs):
+        super().__init__(*args, **kwargs)
+        text = get_form_text(language)
+        self.fields["month"].label = text["month"]
+        self.fields["year"].label = text["year"]
+        self.fields["income"].label = text["income"]
+
     class Meta:
         model = MonthlyBudget
         fields = ("month", "year", "income")
-        labels = {"month": "Mes", "year": "Ano", "income": "Rendimento"}
         widgets = {
             "month": forms.NumberInput(attrs={"min": 1, "max": 12}),
             "year": forms.NumberInput(attrs={"min": 2020, "max": 2100}),
@@ -46,25 +59,43 @@ class MonthlyBudgetForm(forms.ModelForm):
 
 
 class FixedExpenseForm(forms.ModelForm):
+    def __init__(self, *args, language="pt", **kwargs):
+        super().__init__(*args, **kwargs)
+        text = get_form_text(language)
+        self.fields["name"].label = text["name"]
+        self.fields["amount"].label = text["amount"]
+
     class Meta:
         model = FixedExpense
         fields = ("name", "amount")
-        labels = {"name": "Nome", "amount": "Valor"}
 
 
 class TransactionForm(forms.ModelForm):
+    def __init__(self, *args, language="pt", **kwargs):
+        super().__init__(*args, **kwargs)
+        text = get_form_text(language)
+        self.fields["kind"].label = text["kind"]
+        self.fields["kind"].choices = list(get_kind_labels(language).items())
+        self.fields["date"].label = text["date"]
+        self.fields["description"].label = text["description"]
+        self.fields["category"].label = text["category"]
+        self.fields["category"].choices = list(get_category_labels(language).items())
+        self.fields["notes"].label = text["notes"]
+        self.fields["notes"].widget.attrs["placeholder"] = text["optional"]
+        self.fields["amount"].label = text["amount"]
+
     class Meta:
         model = Transaction
         fields = ("kind", "date", "description", "category", "notes", "amount")
-        labels = {
-            "kind": "Tipo",
-            "date": "Data",
-            "description": "Descricao",
-            "category": "Categoria",
-            "notes": "Notas",
-            "amount": "Valor",
-        }
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
-            "notes": forms.TextInput(attrs={"placeholder": "Opcional"}),
+            "notes": forms.TextInput(),
         }
+
+
+class LocalizedAuthenticationForm(AuthenticationForm):
+    def __init__(self, request=None, *args, language="pt", **kwargs):
+        super().__init__(request, *args, **kwargs)
+        text = get_form_text(language)
+        self.fields["username"].label = text["username"]
+        self.fields["password"].label = text["password"]

@@ -1,14 +1,35 @@
 :root {
   color-scheme: light;
-  --bg: #f5f7f3;
-  --ink: #18211f;
-  --muted: #62716d;
-  --line: #dfe7df;
+  --bg: #f7f3ff;
+  --bg2: #eefbf7;
+  --ink: #16191f;
+  --muted: #607078;
+  --line: #dcd9ee;
   --panel: #ffffff;
-  --accent: #177e6b;
-  --accent-strong: #0f5c4f;
-  --warning: #b6592a;
-  --shadow: 0 18px 50px rgba(28, 45, 39, .10);
+  --panel-soft: #fff7e8;
+  --accent: #0d9488;
+  --accent-strong: #0f766e;
+  --accent-alt: #7c3aed;
+  --accent-hot: #f97316;
+  --warning: #c2410c;
+  --shadow: 0 18px 50px rgba(39, 28, 79, .14);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111827;
+  --bg2: #0f172a;
+  --ink: #f8fafc;
+  --muted: #b6c2cf;
+  --line: #304156;
+  --panel: #172033;
+  --panel-soft: #241b33;
+  --accent: #14b8a6;
+  --accent-strong: #2dd4bf;
+  --accent-alt: #a78bfa;
+  --accent-hot: #fb923c;
+  --warning: #fb923c;
+  --shadow: 0 22px 60px rgba(0, 0, 0, .35);
 }
 
 * {
@@ -17,7 +38,11 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(124, 58, 237, .16), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(13, 148, 136, .18), transparent 24%),
+    linear-gradient(135deg, var(--bg), var(--bg2));
+  background-attachment: fixed;
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
@@ -36,7 +61,7 @@ select {
 
 .topbar {
   align-items: center;
-  background: rgba(245, 247, 243, .88);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--line);
   display: flex;
@@ -49,15 +74,61 @@ select {
 }
 
 .brand {
+  align-items: center;
+  display: inline-flex;
   font-size: 1.25rem;
   font-weight: 800;
+  gap: 10px;
   letter-spacing: 0;
+}
+
+.brand-mark {
+  align-items: center;
+  background: linear-gradient(135deg, var(--accent-alt), var(--accent), var(--accent-hot));
+  border-radius: 8px;
+  color: #fff;
+  display: inline-flex;
+  font-size: .78rem;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
 }
 
 .topbar nav {
   align-items: center;
   display: flex;
   gap: 14px;
+}
+
+.prefs-form,
+.preference-panel {
+  align-items: end;
+  display: flex;
+  gap: 8px;
+}
+
+.prefs-form label,
+.preference-panel label {
+  display: grid;
+  gap: 4px;
+}
+
+.prefs-form span,
+.preference-panel span {
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.prefs-form select,
+.preference-panel select {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  min-height: 36px;
+  padding: 4px 28px 4px 9px;
 }
 
 .topbar form {
@@ -114,7 +185,7 @@ h2 {
 
 .button {
   align-items: center;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent-alt), var(--accent));
   border-radius: 8px;
   color: #fff;
   display: inline-flex;
@@ -126,11 +197,11 @@ h2 {
 }
 
 .button:hover {
-  background: var(--accent-strong);
+  filter: saturate(1.15) brightness(.98);
 }
 
 .button.secondary {
-  background: #e6eee9;
+  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
   color: var(--accent-strong);
 }
 
@@ -146,7 +217,7 @@ h2 {
 }
 
 .user-pill {
-  background: #e8eee9;
+  background: color-mix(in srgb, var(--accent) 12%, var(--panel));
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--muted);
@@ -155,8 +226,8 @@ h2 {
 }
 
 .messages {
-  background: #e9f5ef;
-  border: 1px solid #b9ddcb;
+  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
   border-radius: 8px;
   margin-bottom: 20px;
   padding: 10px 14px;
@@ -189,6 +260,10 @@ h2 {
   padding: 22px;
 }
 
+.kpi:nth-child(2n) {
+  background: var(--panel-soft);
+}
+
 .kpi span {
   color: var(--muted);
   display: block;
@@ -208,8 +283,8 @@ h2 {
 }
 
 .kpi.accent {
-  background: #133b35;
-  border-color: #133b35;
+  background: linear-gradient(135deg, #115e59, #4338ca);
+  border-color: transparent;
   color: #fff;
 }
 
@@ -252,7 +327,7 @@ h2 {
 }
 
 .row-link:hover {
-  background: #f9fbf7;
+  background: color-mix(in srgb, var(--accent) 8%, var(--panel));
 }
 
 .row-link span {
@@ -317,7 +392,7 @@ th {
 
 .icon-button {
   align-items: center;
-  background: #f1e5df;
+  background: color-mix(in srgb, var(--accent-hot) 16%, var(--panel));
   border: 0;
   border-radius: 8px;
   color: var(--warning);
@@ -338,6 +413,11 @@ th {
   min-height: calc(100vh - 180px);
 }
 
+.auth-copy {
+  border-left: 6px solid var(--accent-alt);
+  padding-left: 24px;
+}
+
 .auth-copy p:not(.eyebrow),
 .form-panel p {
   color: var(--muted);
@@ -351,6 +431,14 @@ th {
 
 .form-panel {
   padding: 26px;
+}
+
+.preference-panel {
+  background: color-mix(in srgb, var(--accent-alt) 10%, var(--panel));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  padding: 12px;
 }
 
 .form-panel.center {
@@ -376,7 +464,7 @@ th {
 
 .stacked-form input,
 .stacked-form select {
-  background: #fbfcfa;
+  background: color-mix(in srgb, var(--panel) 90%, var(--bg));
   border: 1px solid var(--line);
   border-radius: 8px;
   min-height: 44px;
@@ -433,7 +521,20 @@ th {
   }
 
   .topbar nav {
+    align-items: flex-end;
+    flex-wrap: wrap;
     gap: 9px;
+    justify-content: flex-end;
+  }
+
+  .prefs-form {
+    order: 3;
+    width: 100%;
+  }
+
+  .preference-panel {
+    align-items: stretch;
+    display: grid;
   }
 
   .user-pill {

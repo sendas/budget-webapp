@@ -54,3 +54,17 @@ class AccessControlTests(TestCase):
         self.assertEqual(transaction_response.status_code, 404)
         self.assertTrue(FixedExpense.objects.filter(id=fixed.id).exists())
         self.assertTrue(Transaction.objects.filter(id=transaction.id).exists())
+
+    def test_preferences_update_language_and_theme(self):
+        response = self.client.post(
+            reverse("preferences_update"),
+            {"language": "en", "theme": "dark", "next": reverse("login")},
+        )
+
+        self.assertRedirects(response, reverse("login"))
+        self.assertEqual(self.client.session["language"], "en")
+        self.assertEqual(self.client.session["theme"], "dark")
+
+        login_response = self.client.get(reverse("login"))
+        self.assertContains(login_response, "Log in to financebros")
+        self.assertContains(login_response, 'data-theme="dark"')

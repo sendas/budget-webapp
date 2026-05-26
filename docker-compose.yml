@@ -1,7 +1,7 @@
 services:
-  budget:
+  financebros:
     build: .
-    container_name: budget-webapp
+    container_name: financebros
     restart: unless-stopped
     ports:
       - "8000:8000"

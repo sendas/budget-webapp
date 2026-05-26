@@ -1,4 +1,4 @@
-# Budget Webapp
+# financebros
 
 Aplicacao Django baseada no ficheiro `April_monthly_budget.xlsx`, pronta para correr em Docker no NAS.
 
@@ -23,7 +23,7 @@ docker compose up -d --build
 4. Cria o administrador:
 
 ```bash
-docker compose exec budget python manage.py createsuperuser
+docker compose exec financebros python manage.py createsuperuser
 ```
 
 5. Abre `http://IP-DO-NAS:8000`.

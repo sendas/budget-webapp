@@ -1,26 +1,48 @@
 {% load static %}
 <!doctype html>
-<html lang="pt">
+<html lang="{{ current_language }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Budget App{% endblock %}</title>
+  <title>{% block title %}{{ UI.app_name }}{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'finance/css/app.css' %}">
 </head>
-<body>
+<body data-theme="{{ current_theme }}">
   <header class="topbar">
-    <a class="brand" href="{% url 'dashboard' %}">Budget</a>
+    <a class="brand" href="{% url 'dashboard' %}">
+      <span class="brand-mark">fb</span>
+      <span>{{ UI.app_name }}</span>
+    </a>
     <nav>
+      <form class="prefs-form" method="post" action="{% url 'preferences_update' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <label>
+          <span>{{ UI.language }}</span>
+          <select name="language" onchange="this.form.submit()">
+            {% for code, label in available_languages.items %}
+              <option value="{{ code }}" {% if code == current_language %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          <span>{{ UI.theme }}</span>
+          <select name="theme" onchange="this.form.submit()">
+            <option value="light" {% if current_theme == "light" %}selected{% endif %}>{{ UI.light }}</option>
+            <option value="dark" {% if current_theme == "dark" %}selected{% endif %}>{{ UI.dark }}</option>
+          </select>
+        </label>
+      </form>
       {% if user.is_authenticated %}
         <span class="user-pill">{{ user.username }}</span>
-        {% if user.is_staff %}<a href="/admin/">Admin</a>{% endif %}
+        {% if user.is_staff %}<a href="/admin/">{{ UI.admin }}</a>{% endif %}
         <form method="post" action="{% url 'logout' %}">
           {% csrf_token %}
-          <button class="link-button" type="submit">Sair</button>
+          <button class="link-button" type="submit">{{ UI.logout }}</button>
         </form>
       {% else %}
-        <a href="{% url 'login' %}">Entrar</a>
-        <a class="button compact" href="{% url 'signup' %}">Registo</a>
+        <a href="{% url 'login' %}">{{ UI.login }}</a>
+        <a class="button compact" href="{% url 'signup' %}">{{ UI.signup }}</a>
       {% endif %}
     </nav>
   </header>

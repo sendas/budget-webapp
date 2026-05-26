@@ -1,17 +1,17 @@
 {% extends "finance/base.html" %}
-{% block title %}Registo{% endblock %}
+{% block title %}{{ UI.signup }} · {{ UI.app_name }}{% endblock %}
 {% block content %}
 <section class="auth-layout">
   <div class="auth-copy">
-    <p class="eyebrow">Registo</p>
-    <h1>Criar conta</h1>
-    <p>Depois do registo, a conta fica pendente até o administrador a ativar no painel de administração.</p>
+    <p class="eyebrow">{{ UI.signup }}</p>
+    <h1>{{ UI.signup_title }}</h1>
+    <p>{{ UI.signup_copy }}</p>
   </div>
   <div class="panel form-panel">
     <form method="post" class="stacked-form">
       {% csrf_token %}
       {{ form.as_p }}
-      <button class="button" type="submit">Pedir acesso</button>
+      <button class="button" type="submit">{{ UI.request_access }}</button>
     </form>
   </div>
 </section>

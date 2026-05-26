@@ -1,28 +1,28 @@
 {% extends "finance/base.html" %}
-{% block title %}Orçamento {{ budget.month }}/{{ budget.year }}{% endblock %}
+{% block title %}{{ UI.monthly_budget }} {{ budget.month }}/{{ budget.year }} · {{ UI.app_name }}{% endblock %}
 {% block content %}
 <section class="page-head">
   <div>
     <p class="eyebrow">{{ budget.month|stringformat:"02d" }}/{{ budget.year }}</p>
-    <h1>Orçamento mensal</h1>
+    <h1>{{ UI.monthly_budget }}</h1>
   </div>
   <div class="actions">
-    <a class="button secondary" href="{% url 'fixed_expense_create' budget.id %}">Despesa fixa</a>
-    <a class="button" href="{% url 'transaction_create' budget.id %}">Movimento</a>
+    <a class="button secondary" href="{% url 'fixed_expense_create' budget.id %}">{{ UI.fixed_expense }}</a>
+    <a class="button" href="{% url 'transaction_create' budget.id %}">{{ UI.transaction }}</a>
   </div>
 </section>
 
 <section class="kpi-grid five">
-  <article class="kpi"><span>Rendimento</span><strong>{{ budget.income|floatformat:2 }} €</strong></article>
-  <article class="kpi"><span>Fixas</span><strong>{{ budget.fixed_total|floatformat:2 }} €</strong></article>
-  <article class="kpi"><span>Diárias</span><strong>{{ budget.daily_total|floatformat:2 }} €</strong></article>
+  <article class="kpi"><span>{{ UI.income }}</span><strong>{{ budget.income|floatformat:2 }} €</strong></article>
+  <article class="kpi"><span>{{ UI.fixed }}</span><strong>{{ budget.fixed_total|floatformat:2 }} €</strong></article>
+  <article class="kpi"><span>{{ UI.daily }}</span><strong>{{ budget.daily_total|floatformat:2 }} €</strong></article>
   <article class="kpi"><span>BONGO</span><strong>{{ budget.bongo_total|floatformat:2 }} €</strong></article>
-  <article class="kpi accent"><span>Saldo</span><strong>{{ budget.remaining_balance|floatformat:2 }} €</strong></article>
+  <article class="kpi accent"><span>{{ UI.balance }}</span><strong>{{ budget.remaining_balance|floatformat:2 }} €</strong></article>
 </section>
 
 <section class="split">
   <div class="panel">
-    <div class="panel-head"><h2>Despesas fixas</h2></div>
+    <div class="panel-head"><h2>{{ UI.fixed_expenses }}</h2></div>
     <div class="list">
       {% for expense in fixed_expenses %}
         <div class="row-link muted">
@@ -31,13 +31,13 @@
           <form method="post" action="{% url 'fixed_expense_delete' expense.id %}">{% csrf_token %}<button class="icon-button">×</button></form>
         </div>
       {% empty %}
-        <p class="empty">Sem despesas fixas.</p>
+        <p class="empty">{{ UI.no_fixed }}</p>
       {% endfor %}
     </div>
   </div>
 
   <div class="panel">
-    <div class="panel-head"><h2>Top categorias</h2></div>
+    <div class="panel-head"><h2>{{ UI.top_categories }}</h2></div>
     <div class="list">
       {% for item in category_totals %}
         <div class="row-link muted">
@@ -45,32 +45,32 @@
           <strong>{{ item.total|floatformat:2 }} €</strong>
         </div>
       {% empty %}
-        <p class="empty">Sem categorias ainda.</p>
+        <p class="empty">{{ UI.no_categories }}</p>
       {% endfor %}
     </div>
   </div>
 </section>
 
 <section class="panel wide">
-  <div class="panel-head"><h2>Movimentos</h2></div>
+  <div class="panel-head"><h2>{{ UI.transactions }}</h2></div>
   <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Categoria</th><th>Notas</th><th>Valor</th><th></th></tr>
+        <tr><th>{{ UI.date }}</th><th>{{ UI.description }}</th><th>{{ UI.type }}</th><th>{{ UI.category }}</th><th>{{ UI.notes }}</th><th>{{ UI.amount }}</th><th></th></tr>
       </thead>
       <tbody>
         {% for transaction in transactions %}
           <tr>
             <td>{{ transaction.date }}</td>
             <td>{{ transaction.description }}</td>
-            <td>{{ transaction.get_kind_display }}</td>
-            <td>{{ transaction.get_category_display }}</td>
+            <td>{{ transaction.kind_label }}</td>
+            <td>{{ transaction.category_label }}</td>
             <td>{{ transaction.notes }}</td>
             <td class="money">{{ transaction.amount|floatformat:2 }} €</td>
             <td><form method="post" action="{% url 'transaction_delete' transaction.id %}">{% csrf_token %}<button class="icon-button">×</button></form></td>
           </tr>
         {% empty %}
-          <tr><td colspan="7" class="empty">Ainda não existem movimentos.</td></tr>
+          <tr><td colspan="7" class="empty">{{ UI.no_transactions }}</td></tr>
         {% endfor %}
       </tbody>
     </table>

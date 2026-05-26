@@ -1,12 +1,12 @@
 {% extends "finance/base.html" %}
-{% block title %}A aguardar aprovação{% endblock %}
+{% block title %}{{ UI.pending_title }} · {{ UI.app_name }}{% endblock %}
 {% block content %}
 <section class="form-shell">
   <div class="panel form-panel center">
-    <p class="eyebrow">Conta criada</p>
-    <h1>A aguardar aprovação</h1>
-    <p>O administrador precisa de ativar a tua conta antes de poderes entrar.</p>
-    <a class="button" href="{% url 'login' %}">Voltar ao login</a>
+    <p class="eyebrow">{{ UI.account_created }}</p>
+    <h1>{{ UI.pending_title }}</h1>
+    <p>{{ UI.pending_copy }}</p>
+    <a class="button" href="{% url 'login' %}">{{ UI.back_to_login }}</a>
   </div>
 </section>
 {% endblock %}

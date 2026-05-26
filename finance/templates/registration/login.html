@@ -1,19 +1,39 @@
 {% extends "finance/base.html" %}
-{% block title %}Entrar{% endblock %}
+{% block title %}{{ UI.login }} · {{ UI.app_name }}{% endblock %}
 {% block content %}
 <section class="auth-layout">
   <div class="auth-copy">
-    <p class="eyebrow">Acesso privado</p>
-    <h1>Entrar no orçamento</h1>
-    <p>Os dados financeiros são separados por utilizador. Contas novas só entram depois da aprovação do administrador.</p>
+    <p class="eyebrow">{{ UI.private_access }}</p>
+    <h1>{{ UI.login_title }}</h1>
+    <p>{{ UI.login_copy }}</p>
   </div>
   <div class="panel form-panel">
+    <form class="preference-panel" method="post" action="{% url 'preferences_update' %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <label>
+        <span>{{ UI.language }}</span>
+        <select name="language">
+          {% for code, label in available_languages.items %}
+            <option value="{{ code }}" {% if code == current_language %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>{{ UI.theme }}</span>
+        <select name="theme">
+          <option value="light" {% if current_theme == "light" %}selected{% endif %}>{{ UI.light }}</option>
+          <option value="dark" {% if current_theme == "dark" %}selected{% endif %}>{{ UI.dark }}</option>
+        </select>
+      </label>
+      <button class="button secondary" type="submit">{{ UI.apply }}</button>
+    </form>
     <form method="post" class="stacked-form">
       {% csrf_token %}
       {{ form.as_p }}
-      <button class="button" type="submit">Entrar</button>
+      <button class="button" type="submit">{{ UI.login }}</button>
     </form>
-    <p class="small-link">Ainda não tens conta? <a href="{% url 'signup' %}">Criar registo</a></p>
+    <p class="small-link">{{ UI.no_account }} <a href="{% url 'signup' %}">{{ UI.create_account }}</a></p>
   </div>
 </section>
 {% endblock %}

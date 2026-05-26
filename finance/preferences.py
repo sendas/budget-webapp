@@ -1,0 +1,246 @@
+LANGUAGES = {
+    "pt": "Português",
+    "en": "English",
+}
+
+THEMES = {
+    "light": "Light",
+    "dark": "Dark",
+}
+
+TEXT = {
+    "pt": {
+        "app_name": "financebros",
+        "login": "Entrar",
+        "logout": "Sair",
+        "signup": "Registo",
+        "admin": "Admin",
+        "theme": "Tema",
+        "light": "Claro",
+        "dark": "Escuro",
+        "language": "Idioma",
+        "apply": "Aplicar",
+        "private_access": "Acesso privado",
+        "login_title": "Entrar no financebros",
+        "login_copy": "Os dados financeiros são separados por utilizador. Contas novas só entram depois da aprovação do administrador.",
+        "no_account": "Ainda não tens conta?",
+        "create_account": "Criar registo",
+        "request_access": "Pedir acesso",
+        "signup_title": "Criar conta",
+        "signup_copy": "Depois do registo, a conta fica pendente até o administrador a ativar no painel de administração.",
+        "account_created": "Conta criada",
+        "pending_title": "A aguardar aprovação",
+        "pending_copy": "O administrador precisa de ativar a tua conta antes de poderes entrar.",
+        "back_to_login": "Voltar ao login",
+        "private_dashboard": "Painel privado",
+        "financial_summary": "Resumo financeiro",
+        "new_budget": "Novo orçamento",
+        "income": "Rendimento",
+        "spent": "Gasto",
+        "balance": "Saldo",
+        "budgets": "Orçamentos",
+        "recent_transactions": "Movimentos recentes",
+        "first_budget": "Cria o teu primeiro orçamento mensal para começar.",
+        "no_transactions": "Ainda não existem movimentos.",
+        "monthly_budget": "Orçamento mensal",
+        "fixed_expense": "Despesa fixa",
+        "transaction": "Movimento",
+        "fixed": "Fixas",
+        "daily": "Diárias",
+        "fixed_expenses": "Despesas fixas",
+        "top_categories": "Top categorias",
+        "no_fixed": "Sem despesas fixas.",
+        "no_categories": "Sem categorias ainda.",
+        "transactions": "Movimentos",
+        "date": "Data",
+        "description": "Descrição",
+        "type": "Tipo",
+        "category": "Categoria",
+        "notes": "Notas",
+        "amount": "Valor",
+        "new_fixed_expense": "Nova despesa fixa",
+        "new_transaction": "Novo movimento",
+        "create": "Criar",
+        "save": "Guardar",
+        "register": "Registar",
+        "budget_created": "Orçamento mensal criado.",
+        "fixed_added": "Despesa fixa adicionada.",
+        "transaction_added": "Movimento registado.",
+        "fixed_removed": "Despesa fixa removida.",
+        "transaction_removed": "Movimento removido.",
+    },
+    "en": {
+        "app_name": "financebros",
+        "login": "Log in",
+        "logout": "Log out",
+        "signup": "Sign up",
+        "admin": "Admin",
+        "theme": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "language": "Language",
+        "apply": "Apply",
+        "private_access": "Private access",
+        "login_title": "Log in to financebros",
+        "login_copy": "Financial data is separated by user. New accounts only get access after administrator approval.",
+        "no_account": "No account yet?",
+        "create_account": "Create account",
+        "request_access": "Request access",
+        "signup_title": "Create account",
+        "signup_copy": "After signing up, the account stays pending until an administrator activates it.",
+        "account_created": "Account created",
+        "pending_title": "Waiting for approval",
+        "pending_copy": "The administrator needs to activate your account before you can log in.",
+        "back_to_login": "Back to login",
+        "private_dashboard": "Private dashboard",
+        "financial_summary": "Financial summary",
+        "new_budget": "New budget",
+        "income": "Income",
+        "spent": "Spent",
+        "balance": "Balance",
+        "budgets": "Budgets",
+        "recent_transactions": "Recent transactions",
+        "first_budget": "Create your first monthly budget to get started.",
+        "no_transactions": "There are no transactions yet.",
+        "monthly_budget": "Monthly budget",
+        "fixed_expense": "Fixed expense",
+        "transaction": "Transaction",
+        "fixed": "Fixed",
+        "daily": "Daily",
+        "fixed_expenses": "Fixed expenses",
+        "top_categories": "Top categories",
+        "no_fixed": "No fixed expenses.",
+        "no_categories": "No categories yet.",
+        "transactions": "Transactions",
+        "date": "Date",
+        "description": "Description",
+        "type": "Type",
+        "category": "Category",
+        "notes": "Notes",
+        "amount": "Amount",
+        "new_fixed_expense": "New fixed expense",
+        "new_transaction": "New transaction",
+        "create": "Create",
+        "save": "Save",
+        "register": "Register",
+        "budget_created": "Monthly budget created.",
+        "fixed_added": "Fixed expense added.",
+        "transaction_added": "Transaction recorded.",
+        "fixed_removed": "Fixed expense removed.",
+        "transaction_removed": "Transaction removed.",
+    },
+}
+
+
+FORM_TEXT = {
+    "pt": {
+        "username": "Utilizador",
+        "password": "Palavra-passe",
+        "password_confirm": "Confirmação da palavra-passe",
+        "password_help": "Usa pelo menos 8 caracteres e evita palavras-passe comuns ou totalmente numéricas.",
+        "password_confirm_help": "Repete a palavra-passe para confirmação.",
+        "month": "Mês",
+        "year": "Ano",
+        "income": "Rendimento",
+        "name": "Nome",
+        "amount": "Valor",
+        "kind": "Tipo",
+        "date": "Data",
+        "description": "Descrição",
+        "category": "Categoria",
+        "notes": "Notas",
+        "optional": "Opcional",
+    },
+    "en": {
+        "username": "Username",
+        "password": "Password",
+        "password_confirm": "Password confirmation",
+        "password_help": "Use at least 8 characters and avoid common or fully numeric passwords.",
+        "password_confirm_help": "Repeat the password for confirmation.",
+        "month": "Month",
+        "year": "Year",
+        "income": "Income",
+        "name": "Name",
+        "amount": "Amount",
+        "kind": "Type",
+        "date": "Date",
+        "description": "Description",
+        "category": "Category",
+        "notes": "Notes",
+        "optional": "Optional",
+    },
+}
+
+KIND_LABELS = {
+    "pt": {
+        "DAILY": "Despesa diária",
+        "BONGO": "BONGO / extra",
+    },
+    "en": {
+        "DAILY": "Daily expense",
+        "BONGO": "BONGO / extra",
+    },
+}
+
+CATEGORY_LABELS = {
+    "pt": {
+        "coffee": "Café",
+        "drinks": "Bebidas",
+        "food": "Comida",
+        "shopping": "Compras",
+        "entertainment": "Entretenimento",
+        "transport": "Transporte",
+        "health": "Saúde",
+        "other": "Outro",
+        "fun": "Diversão",
+        "clothes": "Roupa",
+        "travel": "Viagens",
+        "gifts": "Presentes",
+        "repairs": "Reparações",
+        "tech": "Tecnologia",
+        "dining": "Restaurantes",
+    },
+    "en": {
+        "coffee": "Coffee",
+        "drinks": "Drinks",
+        "food": "Food",
+        "shopping": "Shopping",
+        "entertainment": "Entertainment",
+        "transport": "Transport",
+        "health": "Health",
+        "other": "Other",
+        "fun": "Fun",
+        "clothes": "Clothes",
+        "travel": "Travel",
+        "gifts": "Gifts",
+        "repairs": "Repairs",
+        "tech": "Tech",
+        "dining": "Dining out",
+    },
+}
+
+
+def get_language(request):
+    language = request.session.get("language", "pt")
+    return language if language in LANGUAGES else "pt"
+
+
+def get_theme(request):
+    theme = request.session.get("theme", "light")
+    return theme if theme in THEMES else "light"
+
+
+def get_text(request):
+    return TEXT[get_language(request)]
+
+
+def get_form_text(language):
+    return FORM_TEXT[language if language in FORM_TEXT else "pt"]
+
+
+def get_kind_labels(language):
+    return KIND_LABELS[language if language in KIND_LABELS else "pt"]
+
+
+def get_category_labels(language):
+    return CATEGORY_LABELS[language if language in CATEGORY_LABELS else "pt"]
