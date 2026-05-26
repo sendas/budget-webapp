@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }} | financebros{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'finance/css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}">
+    <span class="admin-brand-mark">fb</span>
+    <span>financebros</span>
+  </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<a class="admin-view-site" href="/">{% trans "Abrir app" %}</a>
+{% endblock %}

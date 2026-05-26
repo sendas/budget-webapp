@@ -8,26 +8,38 @@
     <p>{{ UI.login_copy }}</p>
   </div>
   <div class="panel form-panel">
-    <form class="preference-panel" method="post" action="{% url 'preferences_update' %}">
-      {% csrf_token %}
-      <input type="hidden" name="next" value="{{ request.get_full_path }}">
-      <label>
+    <div class="preference-panel">
+      <div class="pref-group">
         <span>{{ UI.language }}</span>
-        <select name="language">
+        <div class="segmented-control">
           {% for code, label in available_languages.items %}
-            <option value="{{ code }}" {% if code == current_language %}selected{% endif %}>{{ label }}</option>
+            <form method="post" action="{% url 'preferences_update' %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <input type="hidden" name="language" value="{{ code }}">
+              <button class="segment-button {% if code == current_language %}active{% endif %}" type="submit">{{ label }}</button>
+            </form>
           {% endfor %}
-        </select>
-      </label>
-      <label>
+        </div>
+      </div>
+      <div class="pref-group">
         <span>{{ UI.theme }}</span>
-        <select name="theme">
-          <option value="light" {% if current_theme == "light" %}selected{% endif %}>{{ UI.light }}</option>
-          <option value="dark" {% if current_theme == "dark" %}selected{% endif %}>{{ UI.dark }}</option>
-        </select>
-      </label>
-      <button class="button secondary" type="submit">{{ UI.apply }}</button>
-    </form>
+        <div class="segmented-control">
+          <form method="post" action="{% url 'preferences_update' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <input type="hidden" name="theme" value="light">
+            <button class="segment-button {% if current_theme == 'light' %}active{% endif %}" type="submit">{{ UI.light }}</button>
+          </form>
+          <form method="post" action="{% url 'preferences_update' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <input type="hidden" name="theme" value="dark">
+            <button class="segment-button {% if current_theme == 'dark' %}active{% endif %}" type="submit">{{ UI.dark }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
     <form method="post" class="stacked-form">
       {% csrf_token %}
       {{ form.as_p }}

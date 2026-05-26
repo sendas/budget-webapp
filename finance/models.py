@@ -18,6 +18,8 @@ class MonthlyBudget(models.Model):
             models.UniqueConstraint(fields=["owner", "month", "year"], name="unique_budget_per_user_month")
         ]
         ordering = ["-year", "-month"]
+        verbose_name = "Orçamento mensal"
+        verbose_name_plural = "Orçamentos mensais"
 
     def __str__(self):
         return f"{self.owner} - {self.month:02d}/{self.year}"
@@ -59,6 +61,8 @@ class FixedExpense(models.Model):
 
     class Meta:
         ordering = ["name"]
+        verbose_name = "Despesa fixa"
+        verbose_name_plural = "Despesas fixas"
 
     def __str__(self):
         return self.name
@@ -118,6 +122,8 @@ class Transaction(models.Model):
 
     class Meta:
         ordering = ["-date", "-created_at"]
+        verbose_name = "Movimento"
+        verbose_name_plural = "Movimentos"
 
     def __str__(self):
         return f"{self.description} - {self.amount}"

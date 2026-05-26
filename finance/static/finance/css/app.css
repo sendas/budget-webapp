@@ -102,33 +102,53 @@ select {
 
 .prefs-form,
 .preference-panel {
-  align-items: end;
+  align-items: center;
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
-.prefs-form label,
-.preference-panel label {
+.pref-group {
   display: grid;
   gap: 4px;
 }
 
-.prefs-form span,
-.preference-panel span {
+.pref-group > span {
   color: var(--muted);
   font-size: .7rem;
   font-weight: 800;
   text-transform: uppercase;
 }
 
-.prefs-form select,
-.preference-panel select {
-  background: var(--panel);
+.segmented-control {
+  background: color-mix(in srgb, var(--panel) 82%, var(--accent-alt));
   border: 1px solid var(--line);
   border-radius: 8px;
-  color: var(--ink);
-  min-height: 36px;
-  padding: 4px 28px 4px 9px;
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+}
+
+.segmented-control form {
+  margin: 0;
+}
+
+.segment-button {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .88rem;
+  font-weight: 800;
+  min-height: 32px;
+  padding: 0 11px;
+  white-space: nowrap;
+}
+
+.segment-button:hover,
+.segment-button.active {
+  background: linear-gradient(135deg, var(--accent-alt), var(--accent));
+  color: #fff;
 }
 
 .topbar form {
@@ -437,6 +457,7 @@ th {
   background: color-mix(in srgb, var(--accent-alt) 10%, var(--panel));
   border: 1px solid var(--line);
   border-radius: 8px;
+  justify-content: space-between;
   margin-bottom: 18px;
   padding: 12px;
 }
@@ -535,6 +556,21 @@ th {
   .preference-panel {
     align-items: stretch;
     display: grid;
+  }
+
+  .prefs-form {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .segmented-control {
+    width: 100%;
+  }
+
+  .segmented-control form,
+  .segment-button {
+    width: 100%;
   }
 
   .user-pill {

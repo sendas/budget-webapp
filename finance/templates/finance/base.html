@@ -14,25 +14,38 @@
       <span>{{ UI.app_name }}</span>
     </a>
     <nav>
-      <form class="prefs-form" method="post" action="{% url 'preferences_update' %}">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.get_full_path }}">
-        <label>
+      <div class="prefs-form" aria-label="{{ UI.language }} e {{ UI.theme }}">
+        <div class="pref-group">
           <span>{{ UI.language }}</span>
-          <select name="language" onchange="this.form.submit()">
+          <div class="segmented-control">
             {% for code, label in available_languages.items %}
-              <option value="{{ code }}" {% if code == current_language %}selected{% endif %}>{{ label }}</option>
+              <form method="post" action="{% url 'preferences_update' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <input type="hidden" name="language" value="{{ code }}">
+                <button class="segment-button {% if code == current_language %}active{% endif %}" type="submit">{{ label }}</button>
+              </form>
             {% endfor %}
-          </select>
-        </label>
-        <label>
+          </div>
+        </div>
+        <div class="pref-group">
           <span>{{ UI.theme }}</span>
-          <select name="theme" onchange="this.form.submit()">
-            <option value="light" {% if current_theme == "light" %}selected{% endif %}>{{ UI.light }}</option>
-            <option value="dark" {% if current_theme == "dark" %}selected{% endif %}>{{ UI.dark }}</option>
-          </select>
-        </label>
-      </form>
+          <div class="segmented-control">
+            <form method="post" action="{% url 'preferences_update' %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <input type="hidden" name="theme" value="light">
+              <button class="segment-button {% if current_theme == 'light' %}active{% endif %}" type="submit">{{ UI.light }}</button>
+            </form>
+            <form method="post" action="{% url 'preferences_update' %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <input type="hidden" name="theme" value="dark">
+              <button class="segment-button {% if current_theme == 'dark' %}active{% endif %}" type="submit">{{ UI.dark }}</button>
+            </form>
+          </div>
+        </div>
+      </div>
       {% if user.is_authenticated %}
         <span class="user-pill">{{ user.username }}</span>
         {% if user.is_staff %}<a href="/admin/">{{ UI.admin }}</a>{% endif %}
