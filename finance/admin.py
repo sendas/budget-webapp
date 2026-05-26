@@ -1,10 +1,44 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 from .models import FixedExpense, MonthlyBudget, Transaction
 
 admin.site.site_header = "financebros admin"
 admin.site.site_title = "financebros"
 admin.site.index_title = "Gestão financeira"
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class FinancebrosUserAdmin(UserAdmin):
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (_("Informação pessoal"), {"fields": ("first_name", "last_name", "email")}),
+        (
+            _("Aprovação e acesso"),
+            {
+                "fields": ("is_active", "is_staff", "is_superuser", "groups"),
+                "description": _("Para aprovar um utilizador normal, marque apenas Ativo. Status de equipa dá acesso à administração."),
+            },
+        ),
+        (_("Datas importantes"), {"fields": ("last_login", "date_joined")}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("username", "email", "password1", "password2", "is_active"),
+            },
+        ),
+    )
+    list_display = ("username", "email", "first_name", "last_name", "is_active", "is_staff")
+    list_filter = ("is_active", "is_staff", "is_superuser", "groups")
+    search_fields = ("username", "first_name", "last_name", "email")
+    filter_horizontal = ("groups",)
 
 
 @admin.register(MonthlyBudget)

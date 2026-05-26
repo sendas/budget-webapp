@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -22,6 +23,18 @@ DEFAULT_FIXED_EXPENSES = [
     "Credito mensal",
     "Telefone",
 ]
+
+
+def percent(value, total):
+    if not total:
+        return 0
+    return max(0, min(100, round((value / total) * 100)))
+
+
+def money_average(total, count):
+    if not count:
+        return Decimal("0")
+    return total / Decimal(count)
 
 
 def signup(request):
@@ -67,20 +80,47 @@ def pending_approval(request):
 def dashboard(request):
     budgets = MonthlyBudget.objects.filter(owner=request.user)
     current_budget = budgets.first()
+    budget_list = list(budgets[:12])
     totals = {
-        "income": sum((budget.income for budget in budgets), start=0),
-        "spent": sum((budget.spent_total for budget in budgets), start=0),
-        "remaining": sum((budget.remaining_balance for budget in budgets), start=0),
+        "income": sum((budget.income for budget in budget_list), start=Decimal("0")),
+        "spent": sum((budget.spent_total for budget in budget_list), start=Decimal("0")),
+        "remaining": sum((budget.remaining_balance for budget in budget_list), start=Decimal("0")),
     }
+    trend_source = list(reversed(budget_list[:6]))
+    max_trend_spent = max([budget.spent_total for budget in trend_source] or [Decimal("0")])
+    monthly_trend = [
+        {
+            "label": f"{budget.month:02d}/{str(budget.year)[-2:]}",
+            "spent": budget.spent_total,
+            "income": budget.income,
+            "width": percent(budget.spent_total, max_trend_spent),
+        }
+        for budget in trend_source
+    ]
+    spend_count = len([budget for budget in budget_list if budget.spent_total])
+    savings_rate = percent(totals["remaining"], totals["income"])
+    expense_ratio = percent(totals["spent"], totals["income"])
+    overview_stats = {
+        "average_spend": money_average(totals["spent"], spend_count),
+        "savings_rate": savings_rate,
+        "expense_ratio": expense_ratio,
+    }
+    expense_mix = [
+        {"label": get_text(request)["spent"], "value": totals["spent"], "width": expense_ratio},
+        {"label": get_text(request)["remaining"], "value": totals["remaining"], "width": max(0, 100 - expense_ratio)},
+    ]
     recent_transactions = Transaction.objects.filter(budget__owner=request.user).select_related("budget")[:8]
     return render(
         request,
         "finance/dashboard.html",
         {
-            "budgets": budgets[:12],
+            "budgets": budget_list,
             "current_budget": current_budget,
             "recent_transactions": recent_transactions,
             "totals": totals,
+            "monthly_trend": monthly_trend,
+            "overview_stats": overview_stats,
+            "expense_mix": expense_mix,
         },
     )
 
@@ -120,11 +160,29 @@ def budget_detail(request, budget_id):
         {"category": category_labels.get(item["category"], item["category"]), "total": item["total"]}
         for item in category_totals
     ]
+    max_category_total = max([item["total"] for item in category_totals] or [Decimal("0")])
+    for item in category_totals:
+        item["width"] = percent(item["total"], max_category_total)
+        item["share"] = percent(item["total"], budget.spent_total)
     kind_labels = get_kind_labels(language)
     transaction_rows = list(transactions[:60])
     for transaction in transaction_rows:
         transaction.kind_label = kind_labels.get(transaction.kind, transaction.get_kind_display())
         transaction.category_label = category_labels.get(transaction.category, transaction.get_category_display())
+    text = get_text(request)
+    expense_mix = [
+        {"label": text["fixed"], "value": budget.fixed_total, "width": percent(budget.fixed_total, budget.spent_total)},
+        {"label": text["daily"], "value": budget.daily_total, "width": percent(budget.daily_total, budget.spent_total)},
+        {"label": "BONGO", "value": budget.bongo_total, "width": percent(budget.bongo_total, budget.spent_total)},
+    ]
+    transaction_count = transactions.count()
+    budget_stats = {
+        "savings_rate": percent(budget.remaining_balance, budget.income),
+        "expense_ratio": percent(budget.spent_total, budget.income),
+        "transaction_count": transaction_count,
+        "average_spend": money_average(budget.spent_total, transaction_count + budget.fixed_expenses.count()),
+        "largest_category": category_totals[0]["category"] if category_totals else "-",
+    }
     return render(
         request,
         "finance/budget_detail.html",
@@ -133,6 +191,8 @@ def budget_detail(request, budget_id):
             "fixed_expenses": budget.fixed_expenses.all(),
             "transactions": transaction_rows,
             "category_totals": category_totals,
+            "expense_mix": expense_mix,
+            "budget_stats": budget_stats,
         },
     )
 
