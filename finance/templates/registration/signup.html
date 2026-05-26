@@ -1,0 +1,18 @@
+{% extends "finance/base.html" %}
+{% block title %}Registo{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-copy">
+    <p class="eyebrow">Registo</p>
+    <h1>Criar conta</h1>
+    <p>Depois do registo, a conta fica pendente até o administrador a ativar no painel de administração.</p>
+  </div>
+  <div class="panel form-panel">
+    <form method="post" class="stacked-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="button" type="submit">Pedir acesso</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "finance/base.html" %}
+{% block title %}A aguardar aprovação{% endblock %}
+{% block content %}
+<section class="form-shell">
+  <div class="panel form-panel center">
+    <p class="eyebrow">Conta criada</p>
+    <h1>A aguardar aprovação</h1>
+    <p>O administrador precisa de ativar a tua conta antes de poderes entrar.</p>
+    <a class="button" href="{% url 'login' %}">Voltar ao login</a>
+  </div>
+</section>
+{% endblock %}

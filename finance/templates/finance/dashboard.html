@@ -1,0 +1,60 @@
+{% extends "finance/base.html" %}
+{% block title %}Painel financeiro{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Painel privado</p>
+    <h1>Resumo financeiro</h1>
+  </div>
+  <a class="button" href="{% url 'budget_create' %}">Novo orçamento</a>
+</section>
+
+<section class="kpi-grid">
+  <article class="kpi">
+    <span>Rendimento</span>
+    <strong>{{ totals.income|floatformat:2 }} €</strong>
+  </article>
+  <article class="kpi">
+    <span>Gasto</span>
+    <strong>{{ totals.spent|floatformat:2 }} €</strong>
+  </article>
+  <article class="kpi accent">
+    <span>Saldo</span>
+    <strong>{{ totals.remaining|floatformat:2 }} €</strong>
+  </article>
+</section>
+
+<section class="split">
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Orçamentos</h2>
+    </div>
+    <div class="list">
+      {% for budget in budgets %}
+        <a class="row-link" href="{{ budget.get_absolute_url }}">
+          <span>{{ budget.month|stringformat:"02d" }}/{{ budget.year }}</span>
+          <strong>{{ budget.remaining_balance|floatformat:2 }} €</strong>
+        </a>
+      {% empty %}
+        <p class="empty">Cria o teu primeiro orçamento mensal para começar.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Movimentos recentes</h2>
+    </div>
+    <div class="list">
+      {% for transaction in recent_transactions %}
+        <div class="row-link muted">
+          <span>{{ transaction.description }}<small>{{ transaction.date }}</small></span>
+          <strong>{{ transaction.amount|floatformat:2 }} €</strong>
+        </div>
+      {% empty %}
+        <p class="empty">Ainda não existem movimentos.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
